@@ -59,6 +59,12 @@ function scripts() {
     .pipe(browserSync.stream());
 }
 
+function html(){
+  return gulp.src('./src/**/*.html')
+    .pipe(gulp.dest('./build/'))
+    .pipe(browserSync.stream())
+}
+
 //Для чистки каталогов
 function clean() {
   return del(['build/*']);
@@ -68,7 +74,7 @@ function clean() {
 function watch() {
   browserSync.init({
     server: {
-      baseDir: "./"
+      baseDir: "./build/"
     }
   });
   //Слежка за css
@@ -76,18 +82,20 @@ function watch() {
   //слежка за js
   gulp.watch('./src/js/**/*.js', scripts);
   //При изменении .html запуск синхронизации
-  gulp.watch("./*.html").on('change', browserSync.reload);
+  gulp.watch("./src/*.html", html).on('change', browserSync.reload);
 }
 
 //Вызов таска styles
 gulp.task('styles', styles);
 //Вызов таска scripts
 gulp.task('scripts', scripts);
+//html
+gulp.task('html', html);
 //Вызов таска для очистки директории build
 gulp.task('del', clean);
 //Вызов таска для отслеживая изменений
 gulp.task('watch', watch);
 //Чистим папку build и запускаем асинхронно style и scripts таски
-gulp.task('build', gulp.series(clean, gulp.parallel(styles, scripts)))
+gulp.task('build', gulp.series(clean, gulp.parallel(html, styles, scripts)))
 //Последовательно вызываем build и watch
 gulp.task('dev', gulp.series('build', 'watch'))
