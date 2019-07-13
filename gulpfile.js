@@ -15,8 +15,14 @@ const browserSync = require('browser-sync').create(); //Для работы с �
 
 //Список css файлов
 const cssFiles = [
-  './src/css/main.css',
+  './src/css/custom.css',
   './src/css/media.css'
+];
+
+//Список css файлов
+const sassFiles = [
+  './src/sass/**/*.sass',
+  './src/sass/**/*.scss'
 ];
 
 //Список js файлов
@@ -25,6 +31,13 @@ const jsFiles = [
   './src/js/main.js'
 ];
 
+function sassTask(){
+  return gulp.src(sassFiles)
+  .pipe(sass({
+    outputStylw: 'expanded'
+  }).on('error', sass.logError))
+  .pipe(gulp.dest('./src/css'));
+}
 
 function styles() {
   return gulp.src(cssFiles)
@@ -87,6 +100,8 @@ function watch() {
 
 //Вызов таска styles
 gulp.task('styles', styles);
+//Вызов таска sass
+gulp.task('sass', sassTask);
 //Вызов таска scripts
 gulp.task('scripts', scripts);
 //html
