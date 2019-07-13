@@ -35,7 +35,7 @@ const jsFiles = [
 function sassTask(){
   return gulp.src(sassFiles)
   .pipe(sass({
-    outputStylw: 'expanded'
+    outputStyle: 'expanded'
   }).on('error', sass.logError))
   .pipe(gulp.dest('./src/css'));
 }
