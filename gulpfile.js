@@ -15,6 +15,7 @@ const browserSync = require('browser-sync').create(); //Для работы с �
 
 //Список css файлов
 const cssFiles = [
+  './src/css/main.css', //Генерится с помощью препроцессора
   './src/css/custom.css',
   './src/css/media.css'
 ];
@@ -90,6 +91,8 @@ function watch() {
       baseDir: "./build/"
     }
   });
+  //Слежка за sass
+  gulp.watch('./src/sass/**/*.sass', sassTask);
   //Слежка за css
   gulp.watch('./src/css/**/*.css', styles);
   //слежка за js
@@ -111,6 +114,6 @@ gulp.task('del', clean);
 //Вызов таска для отслеживая изменений
 gulp.task('watch', watch);
 //Чистим папку build и запускаем асинхронно style и scripts таски
-gulp.task('build', gulp.series(clean, gulp.parallel(html, styles, scripts)))
+gulp.task('build', gulp.series(clean, gulp.parallel(html, sass, styles, scripts)))
 //Последовательно вызываем build и watch
 gulp.task('dev', gulp.series('build', 'watch'))
